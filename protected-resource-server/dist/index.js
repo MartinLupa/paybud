@@ -6,10 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const data_json_1 = __importDefault(require("../secret-data/data.json"));
 const cors = require("cors");
+const morgan = require("morgan");
 const app = (0, express_1.default)();
 const port = 5000;
 app.use(cors());
-app.use(express_1.default.json());
+app.use(morgan("combined"));
 app.get("/", (req, res) => {
     res.json(data_json_1.default);
 });
