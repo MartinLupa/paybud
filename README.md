@@ -1,3 +1,25 @@
+# Traefik
+docker-compose up -d
+docker-compose ps
+docker-compose logs
+
+http://localhost:8080/dashboard/#/
+whoami.localhost
+
+docker-compose scale whoami=<number_of_instances>
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Commands to run in Makerfile
 cd paybud-client && npm buil && npm start
 cd protected-resource-server && npm start
@@ -23,5 +45,14 @@ docker exec nginx-proxy cat /etc/nginx/conf.d/default.conf
 docker logs nginx-proxy
 
 docker build -t proxy-and-service .
-docker run -d -p 80:5000 --name nginx-proxy-service proxy-and-service
+docker run -d -p 5000:80 --name nginx-proxy-service proxy-and-service
+
+5000 is the host port
+80 is the docker port to connect
+
+
+
+cp ./config/default.conf /etc/nginx/conf.d/default.conf
+cp ./sites-available/default /etc/nginx/sites-available/default
+nginx -s reload && echo "Success" || echo "Failure"
 

@@ -7,10 +7,10 @@ const app = express()
 const port = 5000
 
 app.use(cors())
-app.use(morgan("combined"))
+app.use(morgan("tiny"))
 
 app.get("/", (req, res) => {
-    res.json(secretData)
+    res.send(secretData)
 })
 
 app.listen(port, () => {

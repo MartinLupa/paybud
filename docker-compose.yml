@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      - "--log.level=INFO"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      # Exposes port 80 for incoming requests
+      - "80:80"
+      # The Web UI port htp://0.0.0.0:8080 (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # so traefik can listen to Docker events through Docker API
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - private-service-network
+
+  server:
+    image: "protected-resource-server"
+    container_name: "protected-resource-server"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server.rule=Host(`localhost`)"
+      - "traefik.http.routers.server.entrypoints=web"
+      - "traefik.http.services.server.loadbalancer.server.port=5000"
+        # API listens on port 5000
+        # Attach the container to a service
+      - "traefik.http.routers.server.service=server"
+    networks:
+      - private-service-network
+
+networks:
+  private-service-network:
+    name: private-service-network
+    driver: bridge
