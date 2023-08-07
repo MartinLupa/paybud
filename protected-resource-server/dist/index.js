@@ -12,6 +12,7 @@ const port = 5000;
 app.use(cors());
 app.use(morgan("tiny"));
 app.get("/", (req, res) => {
+    console.log("Request: ", req);
     res.send(data_json_1.default);
 });
 app.listen(port, () => {
